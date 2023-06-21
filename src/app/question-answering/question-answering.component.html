@@ -1,3 +1,17 @@
-<p>question-answering works!</p>
+<div class="chat-container background-container">
+    <div class="messages-container ">
+      <div *ngFor="let message of messages"
+        [ngClass]="{'client': message.type === 'client', 'system': message.type === 'system'}">
+        {{ message.message }}
+      </div>
+    </div>
 
 
+    <form [formGroup]="createForm" (ngSubmit)="sendMessage()" class="form">
+      <div class="search-bar">
+        <input type="text" placeholder="Ask a question" formControlName="question">
+        <!-- <small class="alert alert-danger" *ngIf="question.hasError('required') && question.touched">Question is required</small> -->
+        <button>Submit</button>
+      </div>
+    </form>
+</div>
