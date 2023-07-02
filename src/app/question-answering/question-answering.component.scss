@@ -10,8 +10,6 @@
     background-image: url('https://wallpaperaccess.com/full/565447.jpg');
     background-size: cover;
     background-position: center;
-    // backdrop-filter: blur(5px); /* Adjust the blur amount as needed */
-    // background-color: rgba(255, 255, 255, 0.5); /* Adjust the background color and transparency */
   }
   
   .messages-container {
@@ -23,11 +21,12 @@
   .client {
     margin-bottom: 20px;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 13px;
     background-color: lightblue;
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    max-width: 40%;
+    max-width: 50%;
+    width: fit-content;
     margin-left: auto; 
     margin-right: 0;
     text-align: right;
@@ -36,28 +35,29 @@
   .system {
     margin-bottom: 20px;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 13px;
     background-color: lightblue;
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    max-width: 40%;
+    max-width: 50%;
+    width: fit-content;
     margin-left: 0; 
     margin-right: auto;
     text-align: left;
   }
 
-  @media screen and (max-width: 768px) {
-    .client, 
-    .system {
-      max-width: 70%;
-    }
-
-  }
+  // @media screen and (max-width: 768px) {
+  //   .client, 
+  //   .system {
+  //     max-width: 70%;
+  //     width: fit-content;
+  //   }
+  // }
   
   .search-bar {
     display: flex;
     justify-content: space-between;
-    padding: 50px;
+    padding: 60px 200px;
     margin-bottom: 0; 
     margin-top: auto;
   }
@@ -84,4 +84,9 @@
     color: black;
     cursor: pointer;
   }
+
+  #viz {
+    width: 900px;
+    height: 700px;
+}
   
