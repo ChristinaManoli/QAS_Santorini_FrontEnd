@@ -1,11 +1,12 @@
 <div class="chat-container background-container">
     <div class="messages-container ">
-      <div *ngFor="let message of messages"
-        [ngClass]="{'client': message.type === 'client', 'system': message.type === 'system'}">
-        {{ message.message }}
-      </div>
+      <ng-container *ngFor="let message of messages">
+        <div [id]="message.id" [ngClass]="{'client': message.type === 'client', 'system': message.type === 'system', 'viz': message.type === 'viz'}">
+          {{ message.message }}
+        </div>
+      </ng-container>
     </div>
-
+    
 
     <form [formGroup]="createForm" (ngSubmit)="sendMessage()" class="form">
       <div class="search-bar">

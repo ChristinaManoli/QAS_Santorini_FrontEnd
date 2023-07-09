@@ -5,12 +5,11 @@
 }
 
 .navbar{
+  justify-content: right;
+
 }
 
 .info-button {
-    position: fixed;
-    top: 30px;
-    right: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,7 +28,8 @@
   }
   
   .info-text {
-    position: absolute;
+    position: fixed;
+    max-width: 50%;
     top: 50px;
     right: 0;
     background-color: #333;
@@ -39,6 +39,7 @@
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.3s;
+    z-index: 1000; 
   }
   
   .info-button:hover .info-text {

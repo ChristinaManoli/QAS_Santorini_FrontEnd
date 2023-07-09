@@ -6,7 +6,8 @@ import NeoVis from 'neovis.js/dist/neovis.js';
 
 export interface Message {
   type: string;
-  message: string | HTMLElement;
+  message: string;
+  id: string;
 }
 
 @Component({
@@ -14,14 +15,17 @@ export interface Message {
   templateUrl: './question-answering.component.html',
   styleUrls: ['./question-answering.component.scss']
 })
-export class QuestionAnsweringComponent implements OnInit{
+export class QuestionAnsweringComponent implements OnInit {
   searchTerm: any;
   messages: Message[] = [];
-  createForm: any ;
+  //ids: string[] = [];
+
+  createForm: any;
   question: any;
-  response : any;
-  divElement!: HTMLDivElement;
+  response: any;
   private neoVis: any;
+  counter: any = 0;
+
 
   constructor(private service: QaService, private fb: FormBuilder) {
   }
@@ -29,64 +33,74 @@ export class QuestionAnsweringComponent implements OnInit{
   ngOnInit(): void {
     this.createForm = this.fb.group({
       question: ['', [Validators.required]]
-    }); 
+    });
 
     this.messages.push({
       type: 'system',
       message: 'Hi, I am your travel support agent for Santorini. How can I help you?',
+      id: ''
     });
 
-    this.divElement = document.createElement("div");
-    this.divElement.id = "viz";
   }
 
-  sendMessage(): void {
-    this.question = this.createForm.get('question').value;
-    this.messages.push({
-      type: 'client',
-      message: this.question,
-    });
-    
-    this.service.Question_Answering_System(this.question).subscribe({
-      next: (res) => 
-      {
-        this.response = res
-        this.messages.push({
-          type: 'system',
-          message: this.divElement,
-        });
-        console.log(this.response.result1);
-
-        this.draw();
-
-        this.messages.push({
-          type: 'system',
-          message: "Would you like to know more about: " + this.response.result2,
-        });
-      }
-    });
-    this.createForm.reset();
-  }
-
-  draw() {
-    console.log("hiiii");
+  draw(divId: string, cypher : string) {
     var config = {
-      containerId: "viz",
+      containerId: divId,
       neo4j: {
         serverUrl: "neo4j://609579ea.databases.neo4j.io",
         serverUser: "neo4j",
         serverPassword: "santorinikg2023",
       },
-      labels: {
-        
-      },
-      relationships: {
-      },
-      initialCypher: 'MATCH (start{ns0__name:"Santorini"})-[r:ns0__containsPlace]->(end:ns1__Village) RETURN *'
+      labels: {},
+      relationships: {},
+      initialCypher: cypher
     }
 
+    console.log(cypher);
     this.neoVis = new NeoVis(config);
     this.neoVis.render();
+    setTimeout(() => {
+      const div = document.getElementById(divId);
+      if (div) {
+        div.style.display = 'block';
+      }
+    }, 700);
   }
 
+  sendMessage(): void {
+    this.counter++;
+    const divId = "viz" + this.counter;
+
+
+    this.question = this.createForm.get('question').value;
+    this.messages.push({
+      type: 'client',
+      message: this.question,
+      id: '',
+    });
+
+    this.service.Question_Answering_System(this.question).subscribe({
+      next: (res) => {
+        this.response = res
+        this.messages.push({
+          type: 'viz',
+          message: '',
+          id: divId,
+        });
+
+        setTimeout(() => {
+          this.draw(divId, this.response.result1);
+        }, 0);
+
+        setTimeout(() => {
+          this.messages.push({
+            type: 'system',
+            message: "Would you like to know more about: " + this.response.result2,
+            id: '',
+          });
+        }, 2500);
+      }
+    });
+    this.createForm.reset();
+  }
 }
